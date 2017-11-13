@@ -95,6 +95,9 @@ void initialization_eeprom()
 
   timer1.timeOffMinute_E = 226; //адрес памяти
   timer1.timeOffMinute = EEPROM_uint_read(timer1.timeOffMinute_E);
+  
+  timer1.timeOn = timer1.timeOnHour * 60 + timer1.timeOnMinute;
+  timer1.timeOff = timer1.timeOffHour * 60 + timer1.timeOffMinute;
 
   timer1.CSAdress_E = 5;
   timer1.Mode = timer1.read_bit_E(1);

@@ -204,7 +204,9 @@ int timeOffHour_E;
 
 
 //int timeOn;
-int TimeOFF;
+int timeOff;
+int timeOn;
+
 
 int duration;
 int FullMinutesTimerOn;
@@ -229,6 +231,32 @@ bool flagIsRun;
        }
      }else{IsRun = true;}
    }else{IsRun = false;}
+  }
+
+  void CT2()
+  {
+   if (Start){
+     if (!Mode){
+       int nowTime = tm.Hour * 60 + tm.Minute;
+       if (timeOn < timeOff){
+         if (nowTime > timeOn){
+           if(nowTime < timeOff){
+           IsRun = true;
+//         flagIsRun = true;
+           }IsRun = false;
+         }IsRun = false;
+       }
+       
+       if(timeOff < timeOn){
+         if(nowTime <= timeOn){
+           if(nowTime <= timeOff){
+             IsRun = true;
+           }IsRun = false;
+         }IsRun = true;
+         
+       }
+     }
+   }
   }
 
 
