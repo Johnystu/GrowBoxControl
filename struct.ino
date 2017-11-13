@@ -84,6 +84,13 @@ void initialization_eeprom()
 
 
 
+  timer1.CSAdress_E = 5;
+  timer1.Mode = timer1.read_bit_E(1);
+  timer1.Start = timer1.read_bit_E(2);
+  timer1.RelePin_E = 120;
+  timer1.RelePin = EEPROM_uint_read(timer1.RelePin_E);
+
+
   timer1.timeOnHour_E = 220; //адрес памяти
   timer1.timeOnHour = EEPROM_uint_read(timer1.timeOnHour_E);
 
@@ -99,12 +106,6 @@ void initialization_eeprom()
   timer1.timeOn = timer1.timeOnHour * 60 + timer1.timeOnMinute;
   timer1.timeOff = timer1.timeOffHour * 60 + timer1.timeOffMinute;
 
-  timer1.CSAdress_E = 5;
-  timer1.Mode = timer1.read_bit_E(1);
-  timer1.Start = timer1.read_bit_E(2);
-//  timer1.timeOn = 34;
-  timer1.RelePin_E = 120;
-  timer1.RelePin = EEPROM_uint_read(timer1.RelePin_E);
 
 
 };

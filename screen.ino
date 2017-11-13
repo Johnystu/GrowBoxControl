@@ -1,7 +1,7 @@
 void screen_menu(){
 //  byte old_i = i; // для возврата в предыдущий рецепт
 //  i=0; //начало позиции меню
-  byte s=i; 
+//  byte s=i; 
 //  unsigned long prevTime=millis();
 //  display.clear(); 
 //  bool x = 1;
@@ -9,15 +9,15 @@ void screen_menu(){
  //   structures(id);
     encoder();
         
-    if (s != i) {
+    if (_i != i) {
       //prevTime=millis();
-      s=i;
+      _i=i;
         display.clear(); 
       }
       
     display.setCursor(0,0);
  
-    if (i == -1){i=3;}
+    if (i == -1){i=2;}
 
    // display.println(prg.RCP_Name);
    // display.println();
@@ -214,12 +214,12 @@ void screen_sensor_settings(struct sensor &prg){
    if (!Btn){
      switch (i){
 
-       case 1:{prg.write_value_analog(prg.ContactL_E, prg.ContactL);}
-       case 2:{prg.write_value_analog(prg.ContactH_E, prg.ContactH);}
-       case 3:{prg.write_value_analog(prg.SensorPin_E, prg.SensorPin);}
-       case 4:{prg.write_value_analog(prg.RelePin_E, prg.RelePin);}
-       case 5:{prg.write_value_analog(prg.timePV_Update_E, prg.timePV_Update);}
-       case 6:{prg.write_value_analog(prg.almEmptyTank_E, prg.almEmptyTank);}
+       case 1:{prg.write_value_analog(prg.ContactL_E, prg.ContactL);break;}
+       case 2:{prg.write_value_analog(prg.ContactH_E, prg.ContactH);break;}
+       case 3:{prg.write_value_analog(prg.SensorPin_E, prg.SensorPin);break;}
+       case 4:{prg.write_value_analog(prg.RelePin_E, prg.RelePin);break;}
+       case 5:{prg.write_value_analog(prg.timePV_Update_E, prg.timePV_Update);break;}
+       case 6:{prg.write_value_analog(prg.almEmptyTank_E, prg.almEmptyTank);break;}
        
      }//switch
   prevTime=millis(); 
@@ -247,7 +247,14 @@ void screen_timer_settings_set_time(struct timer &prg){
       }
       
     display.setCursor(0,0);
-
+    display.print("Now: ");
+    RTC.read(tm);
+    print2digits(tm.Hour);
+    display.print(':');
+    print2digits(tm.Minute);
+    display.print(':');
+    print2digits(tm.Second);
+    display.println(" ");
 
     if (i < 0){i=8;}
     if (i > 8){i=0;}
@@ -300,19 +307,27 @@ void screen_timer_settings_set_time(struct timer &prg){
 
 
 
-   if (!Btn){
+
+
+    
+//timer1.CSAdress_E = 5;
+//  timer1.Mode = timer1.read_bit_E(1);
+//  timer1.Start = timer1.read_bit_E(2);
+
+   if (!Btn && i !=0){
+     delay(500);
      switch (i){
 
-       case 1:{prg.write_value_analog(prg.timeOnHour_E, prg.timeOnHour);}
-       case 2:{prg.write_value_analog(prg.timeOnMinute_E, prg.timeOnMinute);}
-       case 3:{prg.write_value_analog(prg.timeOffHour_E, prg.timeOffHour);}
-       case 4:{prg.write_value_analog(prg.timeOffMinute_E, prg.timeOffMinute);}
+       case 1:{prg.write_value_analog(prg.timeOnHour_E, prg.timeOnHour); prg.updateTime(); break;}
+       case 2:{prg.write_value_analog(prg.timeOnMinute_E, prg.timeOnMinute); prg.updateTime();break;}
+       case 3:{prg.write_value_analog(prg.timeOffHour_E, prg.timeOffHour); prg.updateTime(); break;}
+       case 4:{prg.write_value_analog(prg.timeOffMinute_E, prg.timeOffMinute); prg.updateTime(); break;}
 
-       case 5:{delay(500); prg.Mode = prg.write_bit_E(!prg.Mode, 1); prevTime=millis(); break;}
-       case 6:{delay(500); prg.Start = prg.write_bit_E(!prg.Start, 2); prevTime=millis(); break;}
-       case 7:{delay(500); prg.stop();prevTime=millis(); break;}
+       case 5:{prg.Mode = prg.write_bit_E(!prg.Mode, 1); prevTime=millis(); break;}
+       case 6:{prg.Start = prg.write_bit_E(!prg.Start, 2); prevTime=millis(); break;}
+       case 7:{prg.stop();prevTime=millis(); break;}
 
-       case 8:{prg.write_value_analog(prg.RelePin_E, prg.RelePin);}
+       case 8:{prg.write_value_analog(prg.RelePin_E, prg.RelePin);break;}
 
        
      }//switch

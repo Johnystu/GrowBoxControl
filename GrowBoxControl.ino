@@ -243,24 +243,29 @@ bool flagIsRun;
            if(nowTime < timeOff){
            IsRun = true;
 //         flagIsRun = true;
-           }IsRun = false;
-         }IsRun = false;
+           }else{IsRun = false;}
+         }else{IsRun = false;}
        }
        
        if(timeOff < timeOn){
-         if(nowTime <= timeOn){
-           if(nowTime <= timeOff){
+         if((nowTime >= timeOn) || (nowTime <= timeOff)){
              IsRun = true;
-           }IsRun = false;
-         }IsRun = true;
+         }else{IsRun = false;}           
          
-       }
-     }
+       }//IsRun = true;
+         
+       
+     }else{IsRun = true;}
    }
   }
 
 
+  void updateTime()
+  {
+    timeOn = timeOnHour * 60 + timeOnMinute;
+    timeOff = timeOffHour * 60 + timeOffMinute;
 
+  }
 
 }; timer timer1;
 timer *_timer1 = &timer1;
@@ -302,18 +307,16 @@ void loop() {
 //  display.print(poliv.PV);
 //  display.println(" "); 
 // 
-  display.print("H air: "); 
-  display.println(dht.readHumidity());
+    
+//display.setCursor(0,0);
 
-  display.print("T air: "); 
-  display.println(heating.PV);
 //  
 if (poliv.dryRunAlmIsActive)  {display.println("ALARM_DRY_RUN");} 
 
 
   heating.CV();
   poliv.CV();
-  timer1.CT();
+  timer1.CT2();
 //  poliv.dryRunProtection(); 
   encoder();
  
@@ -336,23 +339,19 @@ if (poliv.dryRunAlmIsActive)  {display.println("ALARM_DRY_RUN");}
   digitalWrite(timer1.RelePin, !timer1.IsRun);  
   
   
-  display.print("PV:"); 
-  display.print(poliv.PV);
-  display.println("%"); 
   
-    RTC.read(tm);
-    print2digits(tm.Hour);
-    display.print(':');
-    print2digits(tm.Minute);
-    display.print(':');
-    print2digits(tm.Second);
-    display.print(" ");
-    display.print(tm.Day);
-    display.print('/');
-    display.print(tm.Month);
-    display.print('/');
-    display.print(tmYearToCalendar(tm.Year));
-    display.println();
+
+
+ 
+   
+//    display.print(tm.Day);
+//    display.print('/');
+//    display.print(tm.Month);
+//   display.print('/');
+//    display.print(tmYearToCalendar(tm.Year));
+//    display.println();
+
+//    timer1.isRun
 // 
 //  if (_i != i) {display.clear(); _i=i;} 
 //  if (i > count_recipe-1){i=0;}
@@ -363,6 +362,32 @@ if (poliv.dryRunAlmIsActive)  {display.println("ALARM_DRY_RUN");}
     screen_menu();
     //screen_sensor((*_poliv));
 //    }
+  display.print("H air: "); 
+  byte z = dht.readHumidity();
+  display.print(z);  
+  display.println(" %"); 
+
+  display.print("T air: "); 
+  display.print(heating.PV);
+  display.write(127);
+  display.print("C");  
+
+  display.println(); 
+  
+  display.print("Soil : "); 
+  display.print(poliv.PV);
+  display.println(" %"); 
+
+  
+  
+  display.setCursor(81,0);
+    RTC.read(tm);
+    print2digits(tm.Hour);
+    display.print(':');
+    print2digits(tm.Minute);
+    display.print(':');
+    print2digits(tm.Second);
+    display.println(" ");
 
 }//loop
 
